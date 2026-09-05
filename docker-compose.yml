@@ -1,0 +1,101 @@
+name: laravel-next-starter-kit
+
+# One command runs the whole decoupled stack. The browser only ever talks to
+# `frontend`; everything else stays on the internal network.
+#
+#   cp .env.docker.example .env.docker      # then edit domains for real prod
+#   docker compose --env-file .env.docker up -d --build
+#
+# APP_KEY is generated automatically on first boot (see docker/php/entrypoint.sh).
+
+services:
+  # Next.js — the only publicly exposed service.
+  frontend:
+    build:
+      context: ./web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      # Server-to-server: the Next proxy + SSR getUser() reach Laravel here.
+      SANCTUM_BASE_URL: http://api
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      - api
+
+  # nginx fronting php-fpm — internal only.
+  api:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+
+  # Laravel (php-fpm). Runs migrations + caches on boot.
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    volumes:
+      - appkey:/var/appkey
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Queue worker (email verification / password reset mails, etc.).
+  queue:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    command: php artisan queue:work --tries=3 --timeout=90 --sleep=3
+    volumes:
+      - appkey:/var/appkey
+    depends_on:
+      db:
+        condition: service_healthy
+      php:
+        condition: service_started
+
+  # Scheduler (php artisan schedule:work).
+  scheduler:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    command: php artisan schedule:work
+    volumes:
+      - appkey:/var/appkey
+    depends_on:
+      db:
+        condition: service_healthy
+      php:
+        condition: service_started
+
+  db:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+      MYSQL_USER: ${DB_USERNAME:-laravel}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root-secret}
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+volumes:
+  db-data:
+  appkey:
