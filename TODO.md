@@ -15,7 +15,7 @@ Le présent S0 remplace le périmètre S0 de l’ancien plan. La validation OIDC
 
 Ordre obligatoire : 01 → 02 → 03 → 04 → 05 → 06 → 07. Estimation : 2–3 jours concentrés, hors attente d’accès à l’hébergement ; à recalibrer après inventaire.
 
-- [ ] S0-01 — Relever versions, distribution WSL, emplacement PostgreSQL, ports et cible de recette ; consigner les versions retenues.
+- [x] S0-01 — Relever versions, distribution WSL, emplacement PostgreSQL, ports et cible de recette ; consigner les versions retenues.
 - [ ] S0-02 — Préparer l’environnement sans Docker ; créer les bases et rôles dédiés ; prouver l’isolation des tests.
 - [ ] S0-03 — Initialiser Laravel, migrations techniques, configuration et contrat HTTP minimal.
 - [ ] S0-04 — Initialiser Next.js, thème shadcn/Cult UI et page connectée au backend.
@@ -49,5 +49,7 @@ Ordre obligatoire : 01 → 02 → 03 → 04 → 05 → 06 → 07. Estimation : 2
 ## Journal de reprise
 
 Après chaque ticket, ajouter une ligne : `date | ID | à faire/en cours/bloqué/validé | fichiers ou commit | commande et résultat | prochaine action`.
+
+- 2026-09-05 | S0-01 | validé | docs/decisions/0001-foundation.md | Relevé WSL 1, PostgreSQL 17.10 (5432), Redis 6.0.16 (6379), Node v24.19.0, arrêt matrice versions | Passer à S0-02 (services et isolation DB/Redis)
 
 Une case cochée exige une preuve. Si l’hébergement manque, S0-07 reste bloqué ; distinguer « socle local validé » de « sprint terminé ». Ne pas relire toute l’archive à chaque tâche : lire le ticket actif, les règles, puis seulement les références nécessaires.
