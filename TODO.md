@@ -44,14 +44,14 @@ Aucune case n’est cochée sur la seule présence du code. Le périmètre engag
 
 ## Suivi des sous-tâches de l’agent
 
-**Tâche en cours / suivante : R01.02.** Une seule sous-tâche à la fois ; voir les [titres de commits, limites et règles d’arrêt](docs/planning/AGENT-TASKS.md). Les cases R01–R08 ci-dessus sont des synthèses, pas des missions à réaliser d’un seul coup.
+**Tâche en cours / suivante : R01.03.** Une seule sous-tâche à la fois ; voir les [titres de commits, limites et règles d’arrêt](docs/planning/AGENT-TASKS.md). Les cases R01–R08 ci-dessus sont des synthèses, pas des missions à réaliser d’un seul coup.
 
 ### R01 — Environnement Windows
 
 [Fiche R01](docs/planning/tasks/R01.md).
 
 - [x] R01.01 — docs(dev): record the Windows starter baseline.
-- [ ] R01.02 — build(web): make pnpm installation reproducible.
+- [x] R01.02 — build(web): make pnpm installation reproducible.
 - [ ] R01.03 — fix(setup): preserve existing environment configuration.
 - [ ] R01.04 — fix(dev): manage Windows application processes reliably.
 
@@ -140,3 +140,4 @@ Pour chaque story : date, ID, état, responsable, preuve ou commit, blocage éve
 | 2026-09-06 | Adoption starter | Analyse terminée | Lecture locale et sources officielles ; aucune modification applicative |
 | 2026-09-06 | S0-R | Prêt pour affinage/Planning | Commencer R01 lors de l’autorisation de développement |
 | 2026-09-06 | R01.01 | Validé | docs/decisions/0003-windows-starter-baseline.md, README.md | Relevé commit edad712, PHP 8.5.0 x64, Node v24.19.0, pnpm 11.25.0, composer.lock & web/pnpm-lock.yaml. Anomalies consignées : composer.phar 0 octet, pdo_pgsql manquant dans PHP actif. Matrice et Quick start corrigés sans diagnostic supposé réussi. Arrêt avant R01.02 |
+| 2026-09-06 | R01.02 | Validé | package.json, web/package.json, web/pnpm-workspace.yaml, web/.npmrc, .npmrc | pnpm 11.25.0 fixé (packageManager & engines), allowBuilds validé pour sharp & unrs-resolver, lockfile intact, frozen install & build & format & lint vérifiés | Passer à R01.03 (préservation de configuration d'environnement) |
