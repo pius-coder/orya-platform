@@ -29,7 +29,7 @@ Les documents opérationnels et les [fiches de petites tâches](docs/planning/AG
 
 ## Sprint actif à engager : S0-R
 
-- [ ] R01 — Baseline Windows et installation reproductible.
+- [x] R01 — Baseline Windows et installation reproductible.
 - [ ] R02 — Bases, rôles, seeders et E2E isolés.
 - [ ] R03 — Bascule PostgreSQL et traitement des données approuvé.
 - [ ] R04 — Authentification et sécurité sans régression.
@@ -44,7 +44,7 @@ Aucune case n’est cochée sur la seule présence du code. Le périmètre engag
 
 ## Suivi des sous-tâches de l’agent
 
-**Tâche en cours / suivante : R01.04.** Une seule sous-tâche à la fois ; voir les [titres de commits, limites et règles d’arrêt](docs/planning/AGENT-TASKS.md). Les cases R01–R08 ci-dessus sont des synthèses, pas des missions à réaliser d’un seul coup.
+**Tâche en cours / suivante : R02.01.** Une seule sous-tâche à la fois ; voir les [titres de commits, limites et règles d’arrêt](docs/planning/AGENT-TASKS.md). Les cases R01–R08 ci-dessus sont des synthèses, pas des missions à réaliser d’un seul coup.
 
 ### R01 — Environnement Windows
 
@@ -53,7 +53,7 @@ Aucune case n’est cochée sur la seule présence du code. Le périmètre engag
 - [x] R01.01 — docs(dev): record the Windows starter baseline.
 - [x] R01.02 — build(web): make pnpm installation reproducible.
 - [x] R01.03 — fix(setup): preserve existing environment configuration.
-- [ ] R01.04 — fix(dev): manage Windows application processes reliably.
+- [x] R01.04 — fix(dev): manage Windows application processes reliably.
 
 ### R02 — Isolation avant migration
 
@@ -142,3 +142,4 @@ Pour chaque story : date, ID, état, responsable, preuve ou commit, blocage éve
 | 2026-09-06 | R01.01 | Validé | docs/decisions/0003-windows-starter-baseline.md, README.md | Relevé commit edad712, PHP 8.5.0 x64, Node v24.19.0, pnpm 11.25.0, composer.lock & web/pnpm-lock.yaml. Anomalies consignées : composer.phar 0 octet, pdo_pgsql manquant dans PHP actif. Matrice et Quick start corrigés sans diagnostic supposé réussi. Arrêt avant R01.02 |
 | 2026-09-06 | R01.02 | Validé | package.json, web/package.json, web/pnpm-workspace.yaml, web/.npmrc, .npmrc | pnpm 11.25.0 fixé (packageManager & engines), allowBuilds validé pour sharp & unrs-resolver, lockfile intact, frozen install & build & format & lint vérifiés | Passer à R01.03 (préservation de configuration d'environnement) |
 | 2026-09-06 | R01.03 | Validé | scripts/setup.php, scripts/setup.ps1, composer.json | Préparation adaptée (Laravel racine + web), vérification prérequis x64/Node/pnpm, préservation stricte APP_KEY et configurations (.env hash identique sur 2 passes), aucun schéma ni fichier SQLite créé | Passer à R01.04 (gestion fiable des processus Windows) |
+| 2026-09-06 | R01.04 | Validé | start.ps1, stop.ps1, .gitignore, README.md | Working directory explicite ($root), détection ports occupés (8000/3000), worker queue:listen intégré, tracking PIDs (.orya-processes.json), arrêt contrôlé stop.ps1 testé sans toucher aux processus tiers | Story R01 terminée ; passer à R02.01 |

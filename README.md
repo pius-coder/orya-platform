@@ -76,20 +76,21 @@ Protected pages live in an **`(app)` route group** whose layout calls `getUser()
 Le dépôt est déjà initialisé. Ne pas exécuter `laravel new`.
 
 ```powershell
-# 1. Installer les dépendances du frontend Next.js (depuis la racine du dépôt)
-pnpm --dir web install
+# 1. Préparation de l'environnement (idempotente, préserve les clés existantes)
+.\scripts\setup.ps1
 
-# 2. Lancer l'API Laravel et le frontend Next.js sous Windows
+# 2. Lancer l'API Laravel, le Worker de queue et le frontend Next.js
 .\start.ps1
+
+# 3. Pour un arrêt contrôlé des processus d'arrière-plan
+.\stop.ps1
 ```
 
 - Le frontend Web est accessible sur **http://localhost:3000**.
 - L'API Laravel s'exécute sur **http://localhost:8000**.
-
-> **Attention à l'environnement :**
-> - Ne pas relancer `composer run setup` à l'aveugle : il régénère `APP_KEY` et prépare SQLite, ce qui briserait les configurations et secrets 2FA existants.
-> - La gestion reproductible de pnpm fait l'objet de la tâche R01.02.
-> - L'orchestration des processus d'arrière-plan (worker) et la validation des ports font l'objet de R01.04.
+- Le worker de queue traite les événements asynchrones (`queue:listen`).
+- En mode arrière-plan : `.\start.ps1 -Background` (arrêt avec `.\stop.ps1`).
+- Contrôle préalable sans démarrage : `.\start.ps1 -CheckOnly`.
 
 ## Project structure
 

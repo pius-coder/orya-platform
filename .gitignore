@@ -25,6 +25,8 @@ Homestead.yaml
 Thumbs.db
 *.code-workspace
 .env.docker
+.orya-processes.json
+.pids.json
 
 # Local excluded reference assets
 .exclude
