@@ -1,8 +1,19 @@
 # Règles de développement — Orya Platform
 
-Ces règles guideront l’agent chargé de développer. La présente livraison est uniquement documentaire. Lire [TODO.md](TODO.md), puis [S0](docs/planning/SPRINT-00.md). La vision fonctionnelle reste dans `.exclude/saas-platform-plan` ; le nouveau S0 prévaut pour l’initialisation.
+Ces règles guideront l’agent chargé de développer. La présente livraison est uniquement documentaire. Lire [TODO.md](TODO.md), puis [S0-R](docs/planning/SPRINT-00R-SCRUM.md). L’adoption du starter décrite dans [l’audit](docs/planning/STARTER-KIT-AUDIT.md) remplace l’ancien S0 ; la vision métier reste dans `.exclude/saas-platform-plan`.
+
+## Décisions prioritaires après adoption du starter
+
+- Conserver Laravel à la racine, Next.js dans web, Composer, pnpm et les lockfiles existants. Ne pas recréer apps/api ou apps/web, ni remplacer Pest par une autre convention de tests.
+- PHP, Composer, Node, backend et worker s’exécutent sous Windows ; Redis reste dans WSL, PostgreSQL 17 sous Windows. La recette et la CI Linux sont validées séparément, sans Docker.
+- Garder Fortify, Sanctum, next-sanctum et leurs contrats d’authentification. Les nouvelles conventions de réponse et de version d’API ne doivent pas casser le starter.
+- Garder les sessions en PostgreSQL pour la gestion des appareils ; Redis est réservé au cache et à la queue dans S0-R.
+- Protéger aussi les seeders lancés directement : vérifier environnement, base effective et rôle avant toute mutation de fixtures. E2E utilise sa propre base et ses processus, sans réutilisation implicite du serveur dev.
+- Préserver les clés et facteurs d’authentification lors d’un transfert de données ; décider de leur traitement avant bascule. Une demande de planification n’autorise aucune migration.
 
 ## Travailler vite avec des preuves
+
+**Cadence de l’agent :** suivre [AGENT-TASKS.md](docs/planning/AGENT-TASKS.md). Une demande porte sur un seul identifiant de sous-tâche, avec périmètre, validation et titre de commit proposés. Terminer le ticket, mettre à jour le TODO et s’arrêter avant le suivant, sauf consigne explicite différente de l’utilisateur. Ne pas traiter une story entière comme une grosse tâche unique. Les corrections indépendantes découvertes déclenchent un redécoupage, pas une extension silencieuse.
 
 1. Traiter un ticket vérifiable à la fois : critère attendu → test d’intégration pertinent → réalisation minimale → contrôles → mise à jour du TODO.
 2. Employer les conventions Laravel, Eloquent, Form Requests, Policies, Resources, jobs et transactions. Créer un module lorsqu’il reçoit son premier comportement ; ne pas générer tous les modules, repositories génériques ou abstractions spéculatives.
@@ -13,7 +24,7 @@ Ces règles guideront l’agent chargé de développer. La présente livraison e
 
 ## Tests prioritaires
 
-- Backend : PHPUnit avec tests Feature/Integration sur PostgreSQL de même version majeure que la recette. Pas de SQLite comme preuve de compatibilité PostgreSQL.
+- Backend : conserver Pest, qui repose sur PHPUnit, avec tests Feature/Integration sur PostgreSQL de même version majeure que la recette. Pas de SQLite comme preuve de compatibilité PostgreSQL.
 - Tester comportement et invariants observables : statut HTTP, réponse, données persistées, contraintes et effets du job. Éviter les tests qui reproduisent simplement le code ou vérifient des getters.
 - Les fakes Laravel servent aux tests ciblés, mais ne prouvent pas le transport Redis ni l’exécution d’un worker. Maintenir un scénario avec les vrais processus.
 - Pour ce scénario, utiliser des données committées visibles du worker, puis nettoyage ciblé ; pas de transaction de test invisible à une autre connexion.
@@ -28,7 +39,7 @@ Ces règles guideront l’agent chargé de développer. La présente livraison e
 - Lire les variables Laravel via les fichiers de configuration ; tester avec configuration cachée. Déclarer pour Next.js ce qui est public et figé au build versus privé et lu au runtime.
 - Une `APP_KEY` distincte par environnement, persistante entre releases. Aucune régénération automatique au déploiement.
 - Migrations minimales et compatibles avec la version précédente. Contraintes SQL pour l’unicité ; transactions pour les effets atomiques. Aucune migration des futurs domaines avant leur sprint.
-- Pas d’authentification maison ni de promesse OIDC basée sur Passport seul. S1 doit valider le moteur avant toute dépendance de session dans le portail.
+- Pas d’authentification maison ni de promesse OIDC basée sur Sanctum ou Passport seul. La session du portail existe déjà ; S1 valide séparément le fournisseur OIDC et son lien avec les comptes centraux avant le SSO des SaaS.
 - Erreurs API structurées et corrélées, messages publics sobres ; jamais de trace, secret ou chaîne de connexion dans les réponses. Origines autorisées explicites si un accès navigateur cross-origin est ajouté.
 - Plus tard : autorisation serveur sur chaque ressource, portée account/app, sommes entières et idempotence durable ; prestataires de paiement confinés aux adaptateurs, comme prévu par l’architecture.
 

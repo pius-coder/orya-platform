@@ -1,5 +1,7 @@
 # S0 — Initialiser le socle Laravel + Next.js + Cult UI
 
+**Document historique, remplacé le 6 septembre 2026 par [S0-R — starter et PostgreSQL](SPRINT-00R-SCRUM.md). Ne plus exécuter les tickets ci-dessous : structure, gestionnaire de paquets et périmètre d’authentification ont changé.**
+
 Plan du 5 septembre 2026, à exécuter par l’agent de développement. Aucun code ni service n’est créé par ce document.
 
 **Amendement utilisateur :** exécution locale Windows pour PHP, Composer, Node et worker ; WSL limité à Redis. Voir [décision 0002](../decisions/0002-windows-runtime.md). Les références WSL du plan initial sont remplacées par les commandes PowerShell du runbook.
