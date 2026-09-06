@@ -50,12 +50,7 @@
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"pnpm --dir web dev\" --names=api,queue,web --kill-others"
         ],
         "setup": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi",
-            "@php -r \"file_exists('web/.env.local') || copy('web/.env.example', 'web/.env.local');\"",
-            "pnpm --dir web install"
+            "@php scripts/setup.php"
         ],
         "test": [
             "@php artisan config:clear --ansi @no_additional_args",
