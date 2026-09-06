@@ -1,8 +1,8 @@
 # 0001. Décisions de fondation et inventaire d'infrastructure (S0-01)
 
 Date : 5 septembre 2026  
-Statut : Validé  
-Mise à jour : [0002 — Exécution Windows](0002-windows-runtime.md) remplace les choix locaux PHP/Composer/worker ci-dessous à la demande de l’utilisateur.  
+Statut : Validé (remplacé pour S0-R)  
+Mise à jour : [0002 — Exécution Windows](0002-windows-runtime.md) et [0003 — Baseline Windows starter](0003-windows-starter-baseline.md) remplacent la matrice locale pour le sprint S0-R.  
 Auteur : Agent de développement  
 Contexte : Ticket S0-01 du [Sprint 00](../planning/SPRINT-00.md)
 

@@ -11,3 +11,5 @@ Décision utilisateur du 5 septembre 2026, prioritaire sur 0001 et le plan S0 in
 - Les accès SQL administrateur et la cible de recette restent nécessaires à la validation complète de S0.
 
 L’installation apt tentée dans WSL a été interrompue. La vérification des processus n’a trouvé aucun apt/dpkg actif. Redis a été démarré ; aucun backend n’a été installé dans WSL pendant cette session.
+
+Consulter [0003 — Baseline Windows starter](0003-windows-starter-baseline.md) pour le relevé complet des versions observées, cibles et inconnues du ticket R01.01.

@@ -65,31 +65,31 @@ Protected pages live in an **`(app)` route group** whose layout calls `getUser()
 
 ## Requirements
 
-- PHP **8.4+** and Composer
-- Node **20+** and **pnpm** (`corepack enable pnpm`)
+- **PHP 8.4+ / 8.5 x64** avec extensions requises (`pdo_pgsql`, `redis`, `mbstring`, `openssl`, `curl`, `zip`, `bcmath`) et **Composer 2.x**.
+- **Node.js 24 LTS** et **pnpm** (11.x, lockfile `web/pnpm-lock.yaml`).
+- **PostgreSQL 17** (service Windows local sur `127.0.0.1:5432`).
+- **Redis** (service WSL 1 sur `127.0.0.1:6379`).
+- Matrice de référence et état des observations locales : voir [0003 — Baseline Windows starter](docs/decisions/0003-windows-starter-baseline.md).
 
-## Quick start
+## Quick start (Démarrage Windows)
 
-```bash
-# 1. Scaffold the project (runs key:generate + migrate automatically)
-laravel new my-app --using=aliziodev/laravel-next-starter-kit
-cd my-app
+Le dépôt est déjà initialisé. Ne pas exécuter `laravel new`.
 
-# 2. Install the Next.js frontend (run from the my-app root;
-#    web/.env.local is created from web/.env.example automatically)
+```powershell
+# 1. Installer les dépendances du frontend Next.js (depuis la racine du dépôt)
 pnpm --dir web install
 
-# 3. Run the API + queue + frontend together
-composer run dev
+# 2. Lancer l'API Laravel et le frontend Next.js sous Windows
+.\start.ps1
 ```
 
-Open **http://localhost:3000** and register an account. The API runs on **http://localhost:8000**.
+- Le frontend Web est accessible sur **http://localhost:3000**.
+- L'API Laravel s'exécute sur **http://localhost:8000**.
 
-> **Laravel installer prompts:** when `laravel new` asks *"run `npm install --ignore-scripts` and `npm run build`?"*, answer **no** — this kit's frontend lives in `web/` (pnpm) and is installed in step 2. A `tests.yml` warning is harmless (this kit's CI workflow is `e2e.yml`). Choose **Pest** when asked for a testing framework (this kit's backend tests use Pest); Laravel Boost is optional (dev-only AI tooling).
->
-> The root `package.json` only delegates `dev`/`build` to `web/`, so `composer run dev` keeps working even though the installer rewrites its `dev` script to call `npm run dev`.
-
-> Already have a clone? Run `composer run setup` once to copy env files, generate the app key, migrate, and install the web dependencies.
+> **Attention à l'environnement :**
+> - Ne pas relancer `composer run setup` à l'aveugle : il régénère `APP_KEY` et prépare SQLite, ce qui briserait les configurations et secrets 2FA existants.
+> - La gestion reproductible de pnpm fait l'objet de la tâche R01.02.
+> - L'orchestration des processus d'arrière-plan (worker) et la validation des ports font l'objet de R01.04.
 
 ## Project structure
 
