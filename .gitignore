@@ -27,4 +27,9 @@ Thumbs.db
 .env.docker
 
 # Local excluded reference assets
+.exclude
 .exclude/
+/.exclude
+/.exclude/
+.exclude/*
+/.exclude/*
